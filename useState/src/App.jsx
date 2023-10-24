@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Button from './components/Button'
+import { LuDelete } from 'react-icons/LU';
+
 
 
 
@@ -55,7 +57,7 @@ const decimal = () => {}
       handleClick: porcentajeApp
     },
     {
-      label:'🗑️',
+      label: <LuDelete />,
       handleClick: borrarAdd
     },
     {
@@ -132,24 +134,23 @@ const decimal = () => {}
   );
 
   return (
-
-      <div className="container mx-auto px-20">
-        <div class="box-content h-85  p-4 border-4">
-          <h1 className='border border-grqay-800 bg-gray-400 rounded-md px-8 py-4 text-gray-80 hover:bg-purple-500' >Resultado = {result} </h1>
-          <input 
-            type="number" 
-            onChange={(e) => setNum1(e.target.value)}
-            />
-          <input 
-            type="number" 
-            onChange={(e) => setNum2(e.target.value)}
-            />
-          <div className=" grid grid-cols-4 gap-1">
-            {listButtons}
+      <div className='w-screen h-screen flex justify-center items-center'>
+        <div className="container mx-auto px-10 flex justify-center items-center">
+          <div className="box-content  w-60 p-4 border-8 ">
+            
+            <div className='border border-grqay-800 bg-gray-400 rounded-md px-4 py-5 text-gray-80 hover:bg-purple-500 flex flex-col justify-between items-end'>
+              <span className='bg-gray-400 text-black-100'> {result} </span>
+              <span className='bg-gray-400 text-black-100'
+                type="number" 
+                onChange={(e) => setNum2(e.target.value)}
+                /> 
+            </div> 
+            <div className=" grid grid-cols-4 gap-1">
+              {listButtons}
+            </div>
           </div>
         </div>
-      </div>
-    
+      </div>    
   )
 }
 
