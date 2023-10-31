@@ -6,55 +6,89 @@ import { LuDelete } from 'react-icons/LU';
 
 
 const App = () => {
-  const [result, setResult] = useState(0)
-  const [num1, setNum1] = useState(0)
-  const [num2, setNum2] = useState(0)
+  const [data,setData] = useState ({anterior: 0, actual: '', operacion: ''})
 
-  const sumaAdd = () => {
-    const add = parseInt(num1) + parseInt(num2)
-    setResult(add)
+  const signoOperacion = (event) => {
+    if(data.anterior === 0 ){
+      data.anterior = data.actual
+      data.actual = ''
+    } else if  (data.operacion === '%'){
+      data.actual = data.anterior
+    } else if  (data.actual === ''){
+      data.actual = 0
+    } 
+     else {
+    switch(event){
+      case '+':  
+        data.anterior = parseFloat(data.anterior) + parseFloat(data.actual)
+        data.actual = ''
+     break;
+     case '-':  
+        data.anterior = parseFloat(data.anterior) - parseFloat(data.actual)
+        data.actual = ''
+     break;
+     case '*':  
+        data.anterior = parseFloat(data.anterior) * parseFloat(data.actual)
+        data.actual = ''
+     break;
+     case '/':   
+      data.anterior = parseFloat(data.anterior) / parseFloat(data.actual)
+      data.actual = ''
+     break;
+     case '%':  
+     data.actual = parseFloat(data.anterior) * parseFloat(data.actual / 100);
+        //data.actual =  parseFloat(data.actual) / 100
+      
+     break;
+     default: alert("agrega un valor");
+     break;
+    }
+  }
+  
+    setData({
+      ...data,
+      //actual: '',
+      operacion: event
+    })
+
 }
 
-const restaAdd = () => {
-  const add = parseInt(num1) - parseInt(num2)
-  setResult(add)
+const borrarAdd = () =>{
+  setData({...data, actual: 
+    data.actual.slice
+    (0, data.actual.length -1)})
 }
 
-const multiplicacionAdd = () => {
-  const add = parseInt(num1) * parseInt(num2)
-  setResult(add)
+const clearAll = () =>{
+  setData({anterior: 0, actual: '', operacion: ''})
 }
 
-const divisionAdd = () => {
-  const add = parseInt(num1) / parseInt(num2)
-  setResult(add)
+const agregarNumero = (event) =>{
+  if (data.actual.length >= 15) return
+  if (event == '.' && data.actual.includes('.')) return
+  setData({...data, actual: `${data.actual}` + 
+    event})
+    console.log(event)
 }
 
-const porcentajeApp = () => {
-  const add = parseInt(num1) * parseFloat(num2 / 100)
-  setResult(add)
+const resultado = () =>{
+  const newData = data;
+  newData.actual = eval(`${data.anterior} ${data.operacion} ${data.actual}`)
+   newData.actual = Number(newData.actual.toFixed(2))
+  
+  setData({...newData})
 }
 
-const borrarAdd = () =>{}
 
-const borrarTodo = () =>{}
-
-const agregarNumero = () =>{}
-
-const totalAdd = () =>{}
-
-const decimal = () => {}
-
-  console.log(num1,num2)
 
   const calculator = [
     {
-      label:'CE',
-      handleClick: borrarTodo
+      label:'C',
+      handleClick: clearAll
     },
     {
       label:'%',
-      handleClick: porcentajeApp
+      handleClick: () => signoOperacion ('%')
     },
     {
       label: <LuDelete />,
@@ -62,7 +96,7 @@ const decimal = () => {}
     },
     {
       label:'+',
-      handleClick: sumaAdd
+      handleClick: () => signoOperacion ('+')
     },
    
     {
@@ -79,7 +113,7 @@ const decimal = () => {}
     },
     {
       label:'-',
-      handleClick: restaAdd
+      handleClick: () => signoOperacion ('-')
     },
     {
       label:'4',
@@ -95,7 +129,7 @@ const decimal = () => {}
     },
     {
       label:'*',
-      handleClick: multiplicacionAdd
+      handleClick: () => signoOperacion ('*')
     },
     {
       label:'7',
@@ -111,11 +145,11 @@ const decimal = () => {}
     },
     {
       label:'/',
-      handleClick: divisionAdd
+      handleClick: () => signoOperacion ('/')
     },
     {
-      label:',',
-      handleClick:  () => decimal (',')
+      label:'.',
+      handleClick:  () => agregarNumero ('.')
     },
     {
       label:'0',
@@ -123,7 +157,7 @@ const decimal = () => {}
     },
     {
       label:'=',
-      handleClick: totalAdd
+      handleClick: () => resultado ('=')
     },
   ]
 
@@ -138,12 +172,9 @@ const decimal = () => {}
         <div className="container mx-auto px-10 flex justify-center items-center">
           <div className="box-content  w-60 p-4 border-8 ">
             
-            <div className='border border-grqay-800 bg-gray-400 rounded-md px-4 py-5 text-gray-80 hover:bg-purple-500 flex flex-col justify-between items-end'>
-              <span className='bg-gray-400 text-black-100'> {result} </span>
-              <span className='bg-gray-400 text-black-100'
-                type="number" 
-                onChange={(e) => setNum2(e.target.value)}
-                /> 
+            <div className='border border-grqay-800 mb-5 bg-gray-400 rounded-md px-5 py-6 text-gray-80 hover:bg-purple-500 flex flex-col justify-between items-end'>
+              <span className='bg-gray-400 text-gray-500'> {data.anterior} {data.operacion}</span>
+              <span className='bg-gray-400 text-black-100  font-medium text-3xl'> {data.actual} </span>
             </div> 
             <div className=" grid grid-cols-4 gap-1">
               {listButtons}
@@ -153,33 +184,5 @@ const decimal = () => {}
       </div>    
   )
 }
-
-
-/*function App() {
-  const [count, setCount] = useState(0)
-  const handleApp =() =>{
-    setCount(count +1)
-  }
-
-  const restApp =() =>{
-    setCount(count -1)
-  }
-
- 
-  return (
-    <div>
-      <h1 className='text-8x1'>{count}</h1>
-      <button className='border border-grqay-700 bg-gary-400 rounded-md px-4 py-2 text-gray-80' 
-        onClick={ ()=> handleApp()}>
-        +
-      </button>
-      <button className='border border-grqay-700 bg-gary-400 rounded-md px-4 py-2 text-gray-80' 
-        onClick={ ()=> restApp()}>
-        -
-      </button>
-      
-    </div>
-  )
-}*/
 
 export default App
