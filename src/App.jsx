@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import Button from './components/Button'
 import { LuDelete } from 'react-icons/LU';
 
