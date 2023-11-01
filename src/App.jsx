@@ -37,7 +37,6 @@ const App = () => {
      break;
      case '%':  
      data.actual = parseFloat(data.anterior) * parseFloat(data.actual / 100);
-        //data.actual =  parseFloat(data.actual) / 100
       
      break;
      default: alert("agrega un valor");
@@ -47,7 +46,6 @@ const App = () => {
   
     setData({
       ...data,
-      //actual: '',
       operacion: event
     })
 
